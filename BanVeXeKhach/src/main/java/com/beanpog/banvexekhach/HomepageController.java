@@ -1,9 +1,9 @@
-package com.mycompany.banvexekhach;
+package com.beanpog.banvexekhach;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
 
-public class PrimaryController {
+public class HomepageController {
 
     @FXML
     private void switchToSecondary() throws IOException {
