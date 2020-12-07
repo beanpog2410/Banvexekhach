@@ -5,12 +5,7 @@
  */
 package com.beanpog.banvexekhach.services;
 
-/**
- *
- * @author NGUYENVANTHUONG
- */
-
-import com.beanpog.banvexekhach.pojo.Bus;
+import com.beanpog.banvexekhach.pojo.Customer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,49 +15,71 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-        
-        
-        
-public class BusServices {
-     public static Bus getBusById(int id) throws SQLException {
+
+/**
+ *
+ * @author NGUYENVANTHUONG
+ */
+public class CustomerServices {
+     public static Customer getCustomerById(int id) throws SQLException {
         Connection conn = Utils.getConn();
-        String q = "SELECT * FROM xe WHERE idXe=?";
+        String q = "SELECT * FROM khachhang WHERE id=?";
         PreparedStatement stm = conn.prepareStatement(q);
         stm.setInt(1, id);
         ResultSet rs = stm.executeQuery();
         
         while (rs.next())
-            return new Bus(rs.getInt("idXe"), rs.getString("Biensoxe"));
+            return new Customer(rs.getInt("id"), rs.getString("Ho"), rs.getString("Ten"), rs.getString("Sdt"));
         
         return null;
      }
-     public static List<Bus> getBus() throws SQLException {
+     
+     public static Customer getCustomerWithoutId(String fName, String lName, String sdt) throws SQLException {
+        Connection conn = Utils.getConn();
+        String q = "SELECT * FROM khachhang WHERE Ho = ? AND Ten = ? AND Sdt = ?";
+        PreparedStatement stm = conn.prepareStatement(q);
+        stm.setString(1, fName);
+        stm.setString(2, lName);
+        stm.setString(3, sdt);
+        ResultSet rs = stm.executeQuery();
+        
+        while (rs.next())
+            return new Customer(rs.getInt("id"), rs.getString("Ho"), rs.getString("Ten"), rs.getString("Sdt"));
+        
+        return null;
+     }
+     
+     public static List<Customer> getCustomer() throws SQLException {
         Connection conn = Utils.getConn();
         Statement stm = conn.createStatement();
         ResultSet rs = stm.executeQuery("SELECT * FROM xe");
         
-        List<Bus> kq = new ArrayList<>();
+        List<Customer> kq = new ArrayList<>();
         while (rs.next()) {
-            int id = rs.getInt("idXe");
-            String bienSo = rs.getString("Biensoxe");
-            Bus c = new Bus(id, bienSo);
+            int id = rs.getInt("id");
+            String fName = rs.getString("Ho");
+            String lName = rs.getString("Ten");
+            String sdt = rs.getString("Sdt");
             
+            Customer c = new Customer(id, fName, lName, sdt);
             kq.add(c);
         }
         
         return kq;
     }
      
-     public static boolean addBus(int id, String bienSo) {
+     public static boolean addCustomer(String fName, String lName, String sdt) {
          Connection conn = Utils.getConn();
          try {
          
          conn.setAutoCommit(false);
-         String sql = "INSERT INTO xe(idXe, Biensoxe) " 
-                 + "VALUES(?, ?)";
+         String sql = "INSERT INTO khachhang(Ho, Ten, Sdt) " + 
+                 "VALUES(?, ?, ?)";
          PreparedStatement stm = conn.prepareStatement(sql);
-         stm.setInt(1, id);
-         stm.setString(2, bienSo);
+         stm.setString(1, fName);
+         stm.setString(2, lName);
+         stm.setString(3, sdt);
+         
          stm.executeUpdate();
          
          conn.commit();
@@ -73,23 +90,25 @@ public class BusServices {
              try {
                  conn.rollback();
              }  catch (SQLException ex1) {
-                 Logger.getLogger(Bus.class.getName()).log(Level.SEVERE, null, ex1);
+                 Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex1);
              }
                  
          }
          return false;
      }
      
-     public static boolean updateBus(int id, String bienSo) {
+     public static boolean updateCustomer(String fName, String lName, String sdt) {
          Connection conn = Utils.getConn();
          try {
          
          conn.setAutoCommit(false);
-         String sql = "UPDATE INTO xe(idXe, Biensoxe) " 
-                 + "VALUES(?, ?)\"";
+         String sql = "UPDATE INTO khachhang(Ho, Ten, Sdt) " 
+                 + "VALUES(?, ?, ?)";
          PreparedStatement stm = conn.prepareStatement(sql);
-         stm.setInt(1, id);
-         stm.setString(2, bienSo);
+         stm.setString(1, fName);
+         stm.setString(2, lName);
+         stm.setString(3, sdt);
+         
          stm.executeUpdate();
          
          conn.commit();
@@ -100,14 +119,14 @@ public class BusServices {
              try {
                  conn.rollback();
              }  catch (SQLException ex1) {
-                 Logger.getLogger(Bus.class.getName()).log(Level.SEVERE, null, ex1);
+                 Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex1);
              }
                  
          }
          return false;
      }
      
-    public static boolean deleteBus(int id) {
+    public static boolean deleteCustomer(int id) {
         Connection conn = Utils.getConn();
         try {
 
@@ -125,11 +144,10 @@ public class BusServices {
             try {
                 conn.rollback();
             }  catch (SQLException ex1) {
-                Logger.getLogger(Bus.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex1);
             }
 
         }
         return false;
         }
 }
-

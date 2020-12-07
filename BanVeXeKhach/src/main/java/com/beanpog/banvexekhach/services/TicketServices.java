@@ -5,12 +5,7 @@
  */
 package com.beanpog.banvexekhach.services;
 
-/**
- *
- * @author NGUYENVANTHUONG
- */
-
-import com.beanpog.banvexekhach.pojo.Bus;
+import com.beanpog.banvexekhach.pojo.Ticket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,49 +15,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-        
-        
-        
-public class BusServices {
-     public static Bus getBusById(int id) throws SQLException {
+
+/**
+ *
+ * @author NGUYENVANTHUONG
+ */
+public class TicketServices {
+    
+     public static Ticket getTicketById(int id) throws SQLException {
         Connection conn = Utils.getConn();
-        String q = "SELECT * FROM xe WHERE idXe=?";
+        String q = "SELECT * FROM ve WHERE idVe=?";
         PreparedStatement stm = conn.prepareStatement(q);
         stm.setInt(1, id);
         ResultSet rs = stm.executeQuery();
         
         while (rs.next())
-            return new Bus(rs.getInt("idXe"), rs.getString("Biensoxe"));
+            return new Ticket(rs.getInt("idVe"), rs.getInt("price")
+                    , rs.getInt("idKhachHang"), rs.getInt("idGhe")
+                    , rs.getInt("idNhanVien"));
         
         return null;
      }
-     public static List<Bus> getBus() throws SQLException {
+     public static List<Ticket> getTicket() throws SQLException {
         Connection conn = Utils.getConn();
         Statement stm = conn.createStatement();
-        ResultSet rs = stm.executeQuery("SELECT * FROM xe");
+        ResultSet rs = stm.executeQuery("SELECT * FROM ve");
         
-        List<Bus> kq = new ArrayList<>();
+        List<Ticket> kq = new ArrayList<>();
         while (rs.next()) {
-            int id = rs.getInt("idXe");
-            String bienSo = rs.getString("Biensoxe");
-            Bus c = new Bus(id, bienSo);
+            int id = rs.getInt("idVe");
+            int price = rs.getInt("price");
+            int idCus = rs.getInt("idKhachHang");
+            int idSeat = rs.getInt("idGhe");
+            int idStaff = rs.getInt("idNhanVien");
             
+            
+            Ticket c = new Ticket(id, price, idCus, idSeat, idStaff);
             kq.add(c);
         }
         
         return kq;
     }
      
-     public static boolean addBus(int id, String bienSo) {
+     public static boolean addTicket(int price, int idCus,int  idSeat) {
          Connection conn = Utils.getConn();
          try {
          
          conn.setAutoCommit(false);
-         String sql = "INSERT INTO xe(idXe, Biensoxe) " 
-                 + "VALUES(?, ?)";
+         String sql = "INSERT INTO ve(price, idKhachHang, idGhe) " + "VALUES(?, ?, ?)";
          PreparedStatement stm = conn.prepareStatement(sql);
-         stm.setInt(1, id);
-         stm.setString(2, bienSo);
+         stm.setInt(1, price);
+         stm.setInt(2, idCus);
+         stm.setInt(3, idSeat);
+         
          stm.executeUpdate();
          
          conn.commit();
@@ -73,23 +78,27 @@ public class BusServices {
              try {
                  conn.rollback();
              }  catch (SQLException ex1) {
-                 Logger.getLogger(Bus.class.getName()).log(Level.SEVERE, null, ex1);
+                 Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex1);
              }
                  
          }
          return false;
      }
      
-     public static boolean updateBus(int id, String bienSo) {
+     public static boolean updateTicket(int id, int price, int idCus,int  idSeat, int idStaff) {
          Connection conn = Utils.getConn();
          try {
          
          conn.setAutoCommit(false);
-         String sql = "UPDATE INTO xe(idXe, Biensoxe) " 
-                 + "VALUES(?, ?)\"";
+        String sql = "UPDATE INTO ve(idVe, price, idKhachHang, idGhe, idNhanVien) " 
+                + "VALUES(?, ?, ?, ?, ?)";
          PreparedStatement stm = conn.prepareStatement(sql);
          stm.setInt(1, id);
-         stm.setString(2, bienSo);
+         stm.setInt(2, price);
+         stm.setInt(3, idCus);
+         stm.setInt(4, idSeat);
+         stm.setInt(5, idStaff);
+         ;
          stm.executeUpdate();
          
          conn.commit();
@@ -100,19 +109,19 @@ public class BusServices {
              try {
                  conn.rollback();
              }  catch (SQLException ex1) {
-                 Logger.getLogger(Bus.class.getName()).log(Level.SEVERE, null, ex1);
+                 Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex1);
              }
                  
          }
          return false;
      }
      
-    public static boolean deleteBus(int id) {
+    public static boolean deleteTicket(int id) {
         Connection conn = Utils.getConn();
         try {
 
         conn.setAutoCommit(false);
-        String sql = "DELETEs * FROM xe WHERE idXe=?";
+        String sql = "DELETEs * FROM ve WHERE idVe=?";
         PreparedStatement stm = conn.prepareStatement(sql);
         stm.setInt(1, id);
         stm.executeUpdate();
@@ -125,11 +134,11 @@ public class BusServices {
             try {
                 conn.rollback();
             }  catch (SQLException ex1) {
-                Logger.getLogger(Bus.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex1);
             }
 
         }
         return false;
         }
+    
 }
-

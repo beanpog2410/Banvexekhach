@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
+/**z
  * JavaFX App
  */
 public class App extends Application {
@@ -17,7 +17,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("order"), 700, 550);
+        scene = new Scene(loadFXML("homepage"), 700, 550);
         stage.setScene(scene);
         stage.show();
     }
