@@ -11,7 +11,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.beanpog.banvexekhach.HomepageController">
    <children>
-      <Label layoutX="182.0" layoutY="31.0" text="Đặt vé xe khách">
+      <Label layoutX="199.0" layoutY="78.0" text="Tìm chuyến">
          <font>
             <Font size="34.0" />
          </font>
@@ -24,11 +24,6 @@
             <MenuItem mnemonicParsing="false" text="Thoát" />
         </items>
       </MenuButton>
-      <Label layoutX="221.0" layoutY="114.0" text="Bạn muốn đi đâu ?">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
       <Label layoutX="115.0" layoutY="178.0" text="Bến đi :">
          <font>
             <Font size="15.0" />
@@ -44,7 +39,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button fx:id="btSearch" layoutX="251.0" layoutY="329.0" mnemonicParsing="false" text="Tìm Vé">
+      <Button fx:id="btSearch" layoutX="227.0" layoutY="307.0" mnemonicParsing="false" text="Tìm Chuyến">
          <font>
             <Font size="22.0" />
          </font>

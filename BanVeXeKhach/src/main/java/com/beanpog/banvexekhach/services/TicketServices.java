@@ -5,8 +5,12 @@
  */
 package com.beanpog.banvexekhach.services;
 
+import com.beanpog.banvexekhach.pojo.Customer;
 import com.beanpog.banvexekhach.pojo.Ticket;
+import com.beanpog.banvexekhach.pojo.TicketView;
+import com.beanpog.banvexekhach.pojo.Trip;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -140,5 +144,42 @@ public class TicketServices {
         }
         return false;
         }
+    
+    public static List<TicketView> getTicketView(String id) throws SQLException {
+        
+        Connection conn = Utils.getConn();
+        String sql = "SELECT * FROM ve";
+        if (id != null && !id.trim().isEmpty())
+            sql += " WHERE id like ?";
+        
+        PreparedStatement stm = conn.prepareStatement(sql);
+        if (id != null && !id.trim().isEmpty())
+            stm.setString(1, String.format("%%%s%%", id.trim()));
+        
+        ResultSet rs = stm.executeQuery();
+        
+        List<Ticket> ticket = new ArrayList<>();
+        while (rs.next()) {
+            int idT = rs.getInt("idVe");
+            int price = rs.getInt("price");
+            int idCus = rs.getInt("idKhachHang");
+            int idSeat = rs.getInt("idGhe");
+            int idStaff = rs.getInt("idNhanVien");
+            
+            
+            Ticket c = new Ticket(idT, price, idCus, idSeat, idStaff);
+            ticket.add(c);
+        }
+        
+        List<TicketView> ticketView = new ArrayList<>();
+        for (Ticket tk : ticket) {
+            Trip t = TripServices.getTripById(SeatServices.getSeatById(tk.getIdSeat()).getIdTrip());
+            Customer c = CustomerServices.getCustomerById(tk.getIdCus());
+            Date d = t.getTime();
+            ticketView.add(new TicketView(tk, t, c, d));
+        }
+        
+        return ticketView;
+    }
     
 }
