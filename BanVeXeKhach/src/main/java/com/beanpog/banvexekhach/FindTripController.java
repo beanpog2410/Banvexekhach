@@ -23,7 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class HomepageController implements Initializable {
+public class FindTripController implements Initializable {
     
     @FXML
     private ComboBox<BusStation> cbStart;
@@ -49,20 +49,20 @@ public class HomepageController implements Initializable {
                 btsearch_click();        
                 
             } catch (IOException ex) {
-                Logger.getLogger(HomepageController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FindTripController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         
         try {
             this.cbStart.getItems().addAll(BusStationServices.getBusStation());
         } catch (SQLException ex) {
-            Logger.getLogger(HomepageController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FindTripController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
             this.cbDestination.getItems().addAll(BusStationServices.getBusStation());  
         } catch (SQLException ex) {
-            Logger.getLogger(HomepageController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FindTripController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }

@@ -18,7 +18,7 @@ import javafx.scene.control.Label;
 import com.beanpog.banvexekhach.pojo.Bus;
 import com.beanpog.banvexekhach.services.BusServices;
 import com.beanpog.banvexekhach.services.BusStationServices;
-import com.beanpog.banvexekhach.HomepageController;
+import com.beanpog.banvexekhach.FindTripController;
 import com.beanpog.banvexekhach.pojo.BusStation;
 import com.beanpog.banvexekhach.pojo.Seat;
 import com.beanpog.banvexekhach.services.CustomerServices;
